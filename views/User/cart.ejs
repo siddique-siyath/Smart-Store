@@ -1,0 +1,188 @@
+<%- include('../layout/header') %>
+  <%- include('../partials/user-header') %>
+
+
+<head>
+  <link href="./stylesheets/cart.css" rel="stylesheet">
+</head>
+
+
+    <section class="h-100 h-custom" style="background-color: lightslategrey;">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+              <% if(docs.length == 0){ %> 
+              
+
+
+  <div class="container-fluid  mt-100">
+    <div class="row">
+    
+     <div class="col-md-12">
+     
+         <div class="card">
+      
+      
+       </div>
+       <div class="card-body cart">
+           <div class="col-sm-12 empty-cart-cls text-center">
+             <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+             <h3><strong>Your Cart is Empty</strong></h3>
+             <h4>Add something to make me happy :)</h4>
+             <a href="/" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+             
+           
+           </div>
+       </div>
+       <div style="height: 6rem;"></div>
+   </div>
+       
+     
+     </div>
+    
+    </div>
+   
+   </div>
+  <% }else{ %> 
+    <div class="card-body p-0">
+      <div class="row g-0">
+
+        <div class="col-lg-8">
+          <div class="p-5">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+              <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+              <h6 class="mb-0 text-muted"><%= docs.length %>items </h6>
+            </div>
+            <hr class="my-4">
+                      <% for(let i=0;i<docs.length;i++){ %>
+
+
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                          <div class="col-md-2 col-lg-2 col-xl-2">
+                            <img src="/images/<%= docs[i].image1 %> " class="img-fluid rounded-3" alt="Cotton T-shirt">
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <h6 class="text-muted">
+                              <%= docs[i].productName %>
+                            </h6>
+                            <h6 class="text-black mb-0">
+                              <%= docs[i].productName %>
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <button class="btn btn-link px-2">
+                              <a href="/minuscart?id=<%= docs[i]._id %> "><img
+                                  src="https://img.icons8.com/material-rounded/24/000000/minus.png"
+                                  style="margin-left: -2rem;"></a>
+                            </button>
+                            <input id="form1" min="1" name="quantity" value="<%= docs[i].quantity %> " type="text"
+                              class="form-control form-control-sm">
+                            <button class="btn btn-link px-2">
+                              <a href="/pluscart?id=<%= docs[i]._id %> "><img
+                                  src="https://img.icons8.com/android/24/000000/plus.png" /></a>
+                            </button>
+                          </div>
+                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0">
+                              <%= docs[i].price %>
+                            </h6>
+                          </div>
+                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="/delete_cart?id=<%= docs[i]._id %> "
+                              onclick=" return confirm('Are you sure want to remove this <%= docs[i].ProductName %> from wishlist')"
+                              class="text-muted"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAo0lEQVRIieWTTQqDMBCFP6xb7yg9Qo/SHik3qUgXFlxWqGI3WYQ4Jc5I0NIHswnM+5lH4F9wAXpg9tP7NzVcQGIdFxIWFhcJzBk4D4Yb9vtfYzKpg2aDucWuJHDPLbAlwcJc9gQSTsAbfcEjUMZkUoIJeKi9Q+tFkgJg60Hc+SZg6UHc2S3BIQVUJ7J0oDJVAQPr/8DL76hwBp4ryDug1pL/Dj5MW2BhteGWuAAAAABJRU5ErkJggg=="></a>
+                          </div>
+                        </div>
+
+                        <hr class="my-4">
+                        <% } %>
+                        
+
+                          <div class="pt-5" style="background-color: azure;">
+                            <h6 class="mb-0"><a href="/home" class="text-body"><i
+                                  class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                          </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 bg-grey">
+                    <div class="p-5">
+                      <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                      <hr class="my-4">
+
+                      <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-uppercase">items </h5>
+                        <h5>
+                          <%= count %>
+                        </h5>
+                      </div>
+
+                      <h5 class="text-uppercase mb-3">Shipping</h5>
+
+                      <div class="mb-4 pb-2">
+                        <select class="select">
+                          <option value="1">Standard-Delivery-₹50.00</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                          <option value="4">Four</option>
+                        </select>
+                      </div>
+
+                      <h5 class="text-uppercase mb-3">Give code</h5>
+                     
+
+                      <hr class="my-4">
+
+                      <div class="d-flex justify-content-between mb-5">
+                        <h5 class="text-uppercase">Total price</h5>
+                        <h5>₹<%= finalAmount %>
+                        </h5>
+                      </div>
+                      <% if(docs.length == 0){ %> 
+                        <button type="submit" class="btn btn-dark btn-block btn-lg"
+                          data-mdb-ripple-color="dark" disabled>checkout</button>
+                        <% }else{ %> 
+                      <a href="/checkout"><button type="submit" class="btn btn-dark btn-block btn-lg"
+                          data-mdb-ripple-color="dark">checkout</button></a>
+                          <% } %> 
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function QtyChange(ProdId, count) {
+        count = parseInt(count)
+        $.ajax({
+          url: '/cart/changeQuantity',
+          data: {
+            ProdId: ProdId,
+            count: count
+          },
+          method: 'post',
+          success: (response) => {
+            if (response.change) {
+              location.reload()
+              console.log('change successfully')
+            } else {
+              location.reload()
+              console.log('change unseccess')
+            }
+          }
+        })
+      }
+
+
+
+
+    </script>
+
+
+    <%- include('../layout/footer') %>

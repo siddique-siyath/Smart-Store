@@ -1,0 +1,121 @@
+<%- include('../layout/header') %>
+    <%- include('../partials/user-header') %>
+
+
+
+
+
+
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>my orders</title>
+            <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+            <link rel="stylesheet" href="/public/stylesheets/templatemo.css">
+            <link rel="stylesheet" href="/public/stylesheets/custom.css">
+
+            <!-- Load fonts style after rendering the layout styles -->
+            <link rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+            <link rel="stylesheet" href="/public/stylesheets/fontawesome.min.css">
+            <link rel="stylesheet" href="/public/stylesheets/myorder.css">
+        </head>
+
+        <body>
+
+            <section class="vh-100 gradient-custom-2">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-md-10 col-lg-8 col-xl-6">
+                            <div class="card card-stepper" style="border-radius: 16px;">
+                                <div class="card-header p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="text-muted mb-2"> <span class="fw-bold text-body"> </span></p>
+                                            <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">
+                                                    <%= docs.Date %>
+                                                </span> </p>
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <% for(i=0;i<items.length;i++){ %>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-row mb-4 pb-2">
+                                            <div class="flex-fill">
+                                                <h5 class="bold">
+                                                    <%= items[i].productName %>
+                                                </h5>
+                                                <p class="text-muted">
+                                                    <%= items[i]. quantity %> item
+                                                </p>
+                                                <h4 class="mb-3">
+                                                    <%= items[i].price %> /-<span class="small text-muted"> via <%=
+                                                                docs.paymentMode %> </span>
+                                                </h4>
+                                                <p class="text-muted">Tracking Status on: <span class="text-body">
+                                                        <%= docs.orderstatus %>
+                                                    </span></p>
+                                                    <% if(docs.orde) %> 
+                                            </div>
+                                            <div>
+                                                <img class="align-self-center img-fluid"
+                                                    src="/images/<%= items[i].image1  %> " width="250"
+                                                    style="height: 10rem; width: 8rem;">
+                                            </div>
+                                        </div>
+                                        <% } %>
+
+                                    </div>
+                                    <div class="card-footer p-4">
+                                        <div class="d-flex justify-content-between">
+
+                                            <div class="border-start h-100"></div>
+                                            <% if( docs.delivery == "true" ){ %>
+                                               
+                                                    <a href="/returnorder?id=<%= docs._id  %> "> <button class="round-black-btn small-btn" style="background-color: red;border-radius: 20px;margin-left: 32rem;" onclick=" return confirm('Are you sure want to return the order')">Return</button></a>
+                                                
+                                                <% }else{ %>
+                                                    <h5 class="fw-normal mb-0">
+                                                        <a href="/cancelorder?id=<%= docs._id  %> "> <img src="https://img.icons8.com/fluency/48/000000/cancel.png" style="margin-left: 32rem;"/></a>
+                                                    </h5>
+                                                    <% } %>
+                                                        <div class="border-start h-100"></div>
+
+                                                        <div class="border-start h-100"></div>
+                                                        <h5 class="fw-normal mb-0"><a href="#!" class="text-muted"><i
+                                                                    class="fas fa-ellipsis-v"></i></a>
+                                                        </h5>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+            <script src="/public/javascripts/jquery-1.11.0.min.js"></script>
+            <script src="/public/javascripts/jquery-migrate-1.2.1.min.js"></script>
+            <script src="/public/javascripts/bootstrap.bundle.min.js"></script>
+            <script src="/public/javascripts/templatemo.js"></script>
+            <script src="/public/javascripts/custom.js"></script>
+        </body>
+
+        </html>

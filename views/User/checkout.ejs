@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: lightblue">
+        <div class="container-fluid">
+            <div class="logo-user">
+                <a class="navbar-brand text-white" href="#">Navbar</a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+                <div>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Women</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Men</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">kids</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="navbar-nav  mb-lg-0" style=" width: 100%; display: flex; justify-content: end;">
+
+                    <div class="container">
+
+                        <div class="row height d-flex">
+
+                            <div class="col-md-6">
+
+                                <div class="form" style="min-width: 5vw;margin-top: 1rem;">
+                                    <!-- <i class="fa fa-search"></i> -->
+                                    <input type="text" class="form-control form-input" placeholder="Search...">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <a class="nav-icon-link my-auto" href="/userwishlist"><i class="fa-regular fa-heart"></i><img
+                            src="https://img.icons8.com/tiny-color/16/000000/like.png"
+                            style="height: 1.5rem;" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="nav-icon-link my-auto" href="/cart"><i class="fa-solid fa-cart-shopping"></i><img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAA4ElEQVRIid3UPUoDQRyG8V+CkHrJAaw8gOAhXIJn8BQeQXICSxEEj2AXMZDSG6TMWqVKY0RQ12IXXJKgO5vZQPLCdH+e550PhkPJE3J84boNwaQU5Fii34YEHiuipuu5CuyuCG4ilPxz9x1MG7Surov/GlxtAR/X2WKCtwbwb5zVEcBdA8F9XTicBsLfcRwigJcAwTAU3se8ZvMH9EIFtyVgpHi6UZPgEx84iQ2HIyyEv6LJJtjqV0HR/lJxByHJA+fbzQCvyJBGmFtL5vdsZ9vMbbqDnSRVtJvhPMLcHucH7IycM9/QfsEAAAAASUVORK5CYII=" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="nav-icon-link my-auto" href="/myAccount"><i class="fa-solid fa-user-large"></i><img
+                            src="https://img.icons8.com/external-tulpahn-flat-tulpahn/64/000000/external-my-account-online-shopping-tulpahn-flat-tulpahn.png"
+                            style="height: 2rem;" /></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="nav-icon-link my-auto" href="/myOrder"><i class="fa-solid fa-user-large"></i><img
+                            src="https://img.icons8.com/ios-filled/50/000000/shopping-bag.png"
+                            style="height: 1.5rem;" /></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <a class="nav-icon-link my-auto" style="cursor: pointer"><i class="fa-solid fa-right-from-bracket"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>
+                    <a href="/logout" style="margin-top: .5rem;"><button type="submit"
+                            class="btn btn-outline-success my-2 my-sm-0">Logout</button></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class=" container-fluid my-5 ">
+        <div class="row justify-content-center ">
+            <div class="col-xl-10">
+                <div class="card shadow-lg ">
+                    <div class="row p-2 mt-3 justify-content-between mx-sm-2">
+                    </div>
+
+
+
+                    <div class="row justify-content-around">
+                        <div class="col-md-5">
+                            <div class="card border-0">
+                                <div class="card-header pb-0">
+                                    <h2 class="card-title space ">Checkout</h2>
+                                    <p class="card-text text-muted mt-4  space">SHIPPING DETAILS</p>
+                                    <hr class="my-0">
+
+                                    <div class="">
+                                        <p class="card-text text-muted mt-4 mb-2  space">SELECT DELIVERY ADDRESS</p>
+                                    </div>
+
+                                    <form id="checkout-form">
+                                        <!-- loop -->
+
+                                        <div class="form-check mt-3">
+                                            <% for(let i=0;i<docs.address.length;i++) {%>
+                                                <input type="radio" class="form-check-input" id="radio1"
+                                                    name="selectedAddress" value="<%= i %> " required>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].name %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].mobile %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].address1 %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].address2 %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].city %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].state %>
+                                                </p>
+                                                <p class="display-address">
+                                                    <%= docs.address[i].zip %>
+                                                </p>
+                                                <label class="form-check-label" for="radio1"></label>
+                                                <% } %>
+                                        </div>
+
+                                        <!-- loop -->
+                                        <a href="/newAddress" style="text-decoration: none; color: blue;">
+                                            <p>Add a new address</p>
+                                        </a>
+                                </div>
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card border-0 ">
+                                <div class="card-header card-2">
+                                    <p class="card-text text-muted mt-md-4 space">ORDER SUMMARY </p>
+                                    <hr class="my-2">
+                                </div>
+
+
+                                <div class="card-body pt-0">
+
+                                    <% for(i=0;i<result.length;i++){ %>
+
+                                        <div class="row  justify-content-between">
+                                            <div class="col-auto col-md-7">
+                                                <div class="media flex-column flex-sm-row">
+                                                    <img class=" img-fluid mb-2 mt-2"
+                                                        src="/images/<%= result[i].image1 %>" width="62" height="62">
+                                                    <div class="media-body  my-auto">
+                                                        <div class="row ">
+                                                            <div class="col-auto" style="margin-left: 2rem;"><small
+                                                                    class="text-muted">
+                                                                    <%= result[i].productName %>
+                                                                </small></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto"
+                                                style="margin-left: -3rem;">
+                                                <h6 class="">
+                                                    <%= result[i].quantity %>
+                                                </h6>
+                                            </div>
+
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                                <h6><b>₹ <%= result[i].price %> </b></h6>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                                <h6><b>₹ <%= finalAmount %> </b></h6>
+                                            </div>
+                                        </div>
+                                        <% } %>
+
+                                            <hr class="my-2">
+
+
+
+                                            <div class="mb-5">
+                                                <div class="form-outline">
+                                                    <input type="text" name="coupon" id="checkoutCoupon"
+                                                        class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplea2">Enter your
+                                                        code</label>
+                                                </div>
+
+                                             
+
+                                               
+
+
+
+                                                                                <button type="button"
+                                                                                    onclick="applyCoupon()">Apply</button>
+                                            </div>
+
+                                            <p style="color: red;">ewf</p>
+                                            <% if(validation.coupon == true){ %>
+                                                <p style="color: red;">coupon code is incorrect</p>
+                                                <% } %>
+                                                    <% if(validation.couponUsed == true){ %>
+                                                        <p style="color: red;">coupon is already used</p>
+                                                        <% } %>
+
+                                                            <% if(validation.couponMin == true){ %>
+                                                                <p style="color: red;">coupon min value is </p>
+                                                                <% } %>
+
+                                                                    <% if(validation.couponExpire == true){ %>
+                                                                        <p style="color: red;">coupon is expired</p>
+                                                                        <% } %>
+
+
+
+                                            <div class="row mt-5">
+                                                <div class="col">
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-4">
+                                                            <h6 class="mb-3"><b>Sub Total</b></h6>
+                                                        </div>
+                                                        <div class="flex-sm-col col-auto">
+                                                            <input type="text" style="display: none;" id="totalPrice111"
+                                                                value="<%= finalAmount %> ">
+                                                            <h6 class="mb-3"><b>₹ <%= finalAmount %> </b></h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col">
+                                                            <h6 class="mb-3"><b>Shipping</b></h6>
+                                                        </div>
+                                                        <div class="flex-sm-col col-auto">
+                                                            <h6 class="mb-3" style="color: blue"><b>Free</b></h6>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="row justify-content-between"> 
+                                            <div class="col-4"><h6 ><b>Total</b></h6></div> 
+                                            <div class="flex-sm-col col-auto"><h6  class="mb-3"><b>₹ <//%= cart.bill %> </b></h6> </div> 
+                                        </div><hr class="my-0"> 
+                                    </div> -->
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-4">
+                                                            <h6 class="mb-3"><b>Total</b></h6>
+                                                        </div>
+                                                        <div class="flex-sm-col col-auto">
+                                                            <h6 class="mb-3" id="couponDiscountedBill123"><b>₹ <%=
+                                                                        finalAmount %></b></h6>
+                                                            <input type="hidden" id="couponDiscountedBill"
+                                                                name="couponPrice">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="">
+                                                <p class="card-text text-muted mt-1 mb-2  space">SELECT PAYMENT
+                                                    OPTION</p>
+                                            </div>
+
+
+                                            <!-- <form action="/test" method="post"> -->
+                                            <!-- <button id="rzp-button1">Pay</button> -->
+                                            <!-- </form> -->
+
+
+                                            <div class="form-check">
+                                                <input class="form-check-input mt-5 mx-3" type="radio" value="razorpay"
+                                                    name="paymentType" id="flexRadioDefault1" required>
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    <img class=""
+                                                        src="https://upload.wikimedia.org/wikipedia/en/8/89/Razorpay_logo.svg"
+                                                        alt="" height="100" width="100" style="margin-left: 3rem;">
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input  mx-3" type="radio" value="paypal"
+                                                    name="paymentType" id="flexRadioDefault2" required>
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                    <img src="https://pngimg.com/uploads/paypal/paypal_PNG15.png" alt=""
+                                                        height="30" width="100" style="margin-left: 3rem;">
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input mt-4 mx-3" type="radio" value="cod"
+                                                    name="paymentType" id="flexRadioDefault3" required>
+                                                <label class="form-check-label" for="flexRadioDefault3">
+
+
+                                                    <img class="mt-3"
+                                                        src="https://www.pngitem.com/pimgs/m/193-1939153_cod-cash-on-delivery-stamp-hd-png-download.png"
+                                                        alt="" height="40" width="80" style="margin-left: 3rem;">
+                                                </label>
+                                            </div>
+                                            <div class="row mb-5 mt-4 ">
+                                                <div class="col-md-7 col-lg-6 mx-auto"><button type="submit"
+                                                        class="btn btn-block btn-outline-dark">Proceed to
+                                                        Payment</button></div>
+                                            </div>
+                                            </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        $("#checkout-form").submit((e) => {
+            console.log("ajax working")
+            e.preventDefault()
+            $.ajax({
+                url: '/checkout',
+                method: 'post',
+                data: $('#checkout-form').serialize(),
+                success: (response) => {
+                    alert("are you sure to proceed")
+                    console.log("The response")
+                    console.log("hii")
+                    if (response.codSuccess) {
+                        console.log("COD working")
+                        window.open('/orderSuccess')
+                    } else if (response.razorpay) {
+                        console.log("online working")
+                        razorpayPayment(response.order)
+                        console.log(response.order)
+                    } else {
+                        console.log("calling the paypal")
+                        location.replace('/payment/paypal')
+                    }
+                }
+            })
+        })
+
+
+
+        function razorpayPayment(order) {
+            console.log(order)
+            var options = {
+                "key": "rzp_test_VxysCuDTLKCRBt", // Enter the Key ID generated from the Dashboard
+                "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Star Store",
+                "description": "Test Transaction",
+                "image": "/images/logo.png",
+                "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                    RazoverifyPayment(response, order)
+                },
+                "prefill": {
+                    "name": "Star Store",
+                    "email": "startstore@gmail.com",
+                    "contact": "+91 8590462528"
+                },
+                "notes": {
+                    "address": "Star Store ltd Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+        function RazoverifyPayment(payment, order) {
+            location.replace('/orderSuccess')
+            $.ajax({
+                url: '/userhome/razo-verify-payment',
+                data: {
+                    payment,
+                    order
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        console.log("succes")
+                        location.href = '/orderSuccess'
+                    } else {
+                        // need to render payment faild page
+                        location.reload()
+                        alert("payment faild")
+                    }
+                }
+            })
+        }
+
+
+
+
+    </script>
+
+    <script>
+        let finalPrc = document.getElementById("coupondiscount").value;
+        function applyCoupon() {
+            console.log('coupon ajax working');
+            couponId = document.getElementById('checkoutCoupon').value
+            totalPrice = document.getElementById('totalPrice111').value
+            coupondiscount = document.getElementById('couponDiscountedBill').value
+            console.log(totalPrice);
+            console.log(coupondiscount);
+
+            $.ajax({
+                url: '/apply_coupon',
+                data: { couponId: couponId, totalPrice: totalPrice, coupondiscount: coupondiscount },
+                method: 'post',
+                success: (response) => {
+                      
+                    if (response.change) {
+               
+                   console.log(response.change);
+                    if(response.change == true){
+                        console.log(response.couponDiscountedBill);
+
+                        document.getElementById('couponDiscountedBill123').innerHTML = response.couponDiscountedBill
+                        console.log('change successfully');
+                    }
+                    } else if (response.Validation) {
+                        location.reload()
+                        console.log('change unsussfully');
+                    }else{
+                        location.reload()
+                    }
+                    
+                }
+               
+
+            })
+        }
+
+    </script>
+
+</body>
+
+</html>

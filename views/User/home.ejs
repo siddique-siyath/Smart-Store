@@ -1,0 +1,116 @@
+<%- include('../layout/header') %>
+  <%- include('../partials/user-header') %>
+
+
+
+
+
+    <!-- Header-->
+    <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">Shop in style</h1>
+          <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- section -->
+
+
+
+
+
+
+
+    <section class="py-5">
+      <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center ml-5">
+
+          <% for(let i=0; i<result.length; i++) { %>
+            <div class="card" style="height: 33rem;width: 20rem; margin-left: 3rem;margin-top: 3rem;">
+
+              <div class="d-flex justify-content-between p-3">
+                <p class="lead mb-0">Today's Offer Price</p>
+                <div class=" d-flex align-items-center justify-content-center shadow-1-strong"
+                  style="width: 35px; height: 35px;">
+                  <% if (wish.length==0) {%>
+                    <a href="/wishlist<%= result[i]._id %>"><button type="submit"
+                        style="border-width: 0px; background-color: white;"><img
+                          src="https://img.icons8.com/ios/50/000000/like.png" style="height: 2rem;" /></button></a>
+
+                    <% }else{ %>
+                      <% for(let j=0;j<wish.length;j++){ %>
+                        <% if(wish[j].Productid==result[i]._id){ %>
+
+                          <a href="/wishlist<%= result[i]._id %>"><button type="submit"
+                              style="border-width: 0px; background-color: white;"><img
+                                src="https://img.icons8.com/fluency/48/000000/like.png"
+                                style="height: 2rem;" /></button></a>
+
+                          <% }else{ %>
+
+                            <a href="/wishlist<%= result[i]._id %>"><button type="submit"
+                                style="border-width: 0px; background-color: white;"><img
+                                  src="https://img.icons8.com/ios/50/000000/like.png"
+                                  style="height: 2rem;" /></button></a>
+
+                            <% } %>
+                              <% } %>
+                                <% } %>
+
+                </div>
+              </div>
+              <a href="/productview?id=<%= result[i]._id  %> ">
+                <img src="/images/<%= result[i].image1 %>" class="card-img-top" alt="Laptop" style="height: 20rem;" />
+              </a>
+
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <p class="small"><a href="#!" class="text-muted">
+                      <%= result[i].category %>
+                    </a></p>
+                  <p class="small text-danger"><s>$<%= result[i].actualPrice %> </s></p>
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                  <h5 class="mb-0">
+                    <%= result[i].productName %>
+                  </h5>
+                  <h5 class="text-dark mb-0">$<%= result[i].discountedPrice %>
+                  </h5>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                  <% if(result[i].stock <=0){ %>
+                    <div style="background-color: orange; width: 15rem; height: 2.5rem; border-radius: 25px; padding-left: 2.5rem; margin-top: -0.5rem;">
+                    <p style="font-size: 26px;">Out Of Stock</p>
+                  </div>
+                    <% }else{ %>
+                      <p class="text-muted mb-0">Available: <span class="fw-bold">
+                        <%= result[i].stock %>
+                      </span></p>
+                      <% } %>
+
+                        
+                        <div class="ms-auto text-warning">
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                        </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+        </div>
+
+
+
+      </div>
+    </section>
+
+
+    <%- include('../layout/footer') %>

@@ -1,0 +1,36 @@
+<%- include('../layout/header') %> 
+<%- include('../partials/admin-header')  %> 
+
+
+<section>
+<h1>Add Category</h1>
+  <div class="wrapper container">
+      <div class="row justify-content-center mt-5" > 
+          <div class="col-5"> 
+              <form action="/admin/add_category" method="post" > 
+        
+                  <div class="form-group"> 
+                      <label for="exampleInputName1">Category Name</label> 
+                      <input type="name" name="name" class="form-control" id="name" > 
+                  </div> 
+                
+               
+                 
+
+                      <!-- <div class="col-2 mt-3"> 
+                          <input type="submit" class="btn btn-warning" value="Upload Images"> 
+                      </div> --> 
+                      <button type="submit" class="btn btn-warning mt-3">Add Category</button> 
+                  </div> 
+              </form> 
+          </div> 
+        </div>
+      </div>
+
+
+</section>
+
+
+
+
+<%- include('../layout/footer') %> 
