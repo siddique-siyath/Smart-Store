@@ -225,7 +225,7 @@ router.get('/home', (req, res) => {
 // Category
 
 router.get("/addcategory", (req, res) => {
-  res.render('admin/addcategory')
+  res.render('/admin/addcategory')
 })
 
 router.post("/add_category", (req, res) => {
