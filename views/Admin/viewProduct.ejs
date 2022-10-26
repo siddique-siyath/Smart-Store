@@ -5,8 +5,8 @@
 
     <section>
         <div class="table-responsive container-fluid">
-            <div class="container">
-              <div class="input-group mt-5">
+            <div class="container-fluid">
+              <div class="container-fluid input-group mt-5">
 
                 <a href="/Product">
                 <button class="btn btn-primary" type="submit">Add Product</button>
@@ -20,14 +20,17 @@
                     <button class="btn btn-primary" type="submit">Category</button>
                     </a>
 
-                <div style="position: absolute; right: 0px; width: 300px;">
-                  <input style="align-items: flex-end" type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search..."/>
-                </div>
-              </div>
                 
-              <div class="table-responsive">
-                <table id="myTable" class="table table-hover mt-5">
-                    <thead>
+              </div>
+             
+                
+     <section>
+
+    
+                <div class="table-responsive p-5">
+                  <table class="table table-hover" id="myTable">
+                  <div class="table table-hover container"  >
+                      <thead>
                       <tr>
                         <th scope="col">No:</th>
                         <th scope="col">ProductName</th>
@@ -45,17 +48,17 @@
                 
                     </thead>
               
-                    
+                    <tbody>
                     <% for(let i =0; i< product.length; i++) {%> 
-                        <tbody>
+                       
                         <tr>
-                              <th style="padding-top: 2rem;" scope="row"> <%=i+1  %> </th>
-                              <td style="padding-top: 2rem;"><%= product[i].productName%> </td>
-                              <td style="padding-top: 2rem;"><%= product[i].actualPrice%> </td>
-                              <td style="padding-top: 2rem;"><%= product[i].discountedPrice%> </td>
-                              <td style="padding-top: 2rem;"><%= product[i].description%> </td>
-                              <td style="padding-top: 2rem;"><%= product[i].stock%> </td>
-                              <td style="padding-top: 2rem;"><%= product[i].category%> </td>
+                              <th scope="row"> <%=i+1  %> </th>
+                              <td ><%= product[i].productName%> </td>
+                              <td ><%= product[i].actualPrice%> </td>
+                              <td ><%= product[i].discountedPrice%> </td>
+                              <td ><%= product[i].description%> </td>
+                              <td ><%= product[i].stock%> </td>
+                              <td ><%= product[i].category%> </td>
                               
                               <td> <img id="main-image" src="/images/<%= product[i].image1  %>  " width="250" style="width: 5rem;height: 5rem;"/> </td>
                               <td> <img id="main-image" src="/images/<%= product[i].image2  %>  " width="250" style="width: 5rem;height: 5rem;"/> </td>
@@ -76,38 +79,27 @@
                                 </a>
                               </td>
                             </tr>
-                        </tbody>
+                     
                         <% } %> 
-                </table>
+                      </tbody>
+                  </div>
               </table>
             </div>
         
-          </div>
-        </table>
-      </div>
+          
       </section>
-      
-      
-      <script>
-        function myFunction() {
-          let input = document.getElementById("myInput");
-          let filter = input.value.toUpperCase();
-          let table = document.getElementById("myTable");
-          let tr = table.getElementsByTagName("tr");
-          for (let i = 0; i < tr.length; i++) {
-              let td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-              let txtValue = td.textContent || td.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            }       
-          }
-        }
-      </script>
 
+
+      
+  
+  
+  <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    } );
+    </script>
+  
+      
       
 
 

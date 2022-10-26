@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/public/stylesheets/selection.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 </head>
 
 <body>
@@ -27,60 +31,123 @@
     
 
 
-    <div class="btn-group btn-group-toggle" id="selection" data-toggle="buttons" style="margin-left: 35rem;margin-top: 3rem;">
-        <label class="btn btn-secondary ">
-            <input type="radio" name="options" id="option1" autocomplete="off"><a href="/admin/orders"><button
-                    class="button">New</button></a>
-        </label>
-        <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option2" autocomplete="off"><a href="/admin/confirmed"><button
-                    class="button">confirmed</button></a>
-        </label>
-        <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option3" autocomplete="off"><a href="/admin/delivered"><button
-                    class="button">delivered</button></a>
-        </label>
+
+
+
+<section class="pt-3" style="text-align: center;">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+       <a href="/admin/orders"><input type="button" class="btn-check custom-button example-3" name="btnradio" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-lg btn-outline-dark bg-primary" for="btnradio1">New</label></a> 
+      
+        <a href="/admin/confirmed"><input type="button" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+        <label class="btn btn-lg btn-outline-dark" for="btnradio2">Confirm</label></a>
+      
+        <a href="/admin/delivered"><input type="button" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+        <label class="btn btn-lg btn-outline-dark" for="btnradio3">Delivered</label></a>
+
+        <a href="/admin/cancel"><input type="button" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+        <label class="btn btn-lg btn-outline-dark" for="btnradio4">Cancelled</label></a>
+
+        <a href="/admin/return"><input type="button" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+            <label class="btn btn-lg btn-outline-dark" for="btnradio5">RETURNED</label></a>
     </div>
+</section>
+
 <h1 style="margin-left: 41rem;margin-top: 1rem;">NEW</h1>
-    <table class="table" id="myTable" style="width:80%;border: 2em,thin; margin-left: 100px;">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">amount</th>
-                <th scope="col">date</th>
-                <th scope="col">payment</th>
-                <th scope="col">Action</th>
-                <th scope="col">Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for(let i=0;i<result.length;i++){ %>
+
+   
+
+
+
+     
+<% if(result.length == 0){ %>
+    <div class="container-fluid  mt-100">
+        <div class="row">
+        
+         <div class="col-md-12">
+         
+             <div class="card">
+          
+          
+           </div>
+           <div class="card-body cart">
+               <div class="col-sm-12 empty-cart-cls text-center">
+                 <img src="/Image/istockphoto-1357284048-612x612.jpg" style="height: 25rem;width: 25rem;" width="130" height="130" class="img-fluid mb-4 mr-3">
+        
+                 
+              
+                 
+               
+               </div>
+           </div>
+           <div style="height: 6rem;"></div>
+       </div>
+           
+         
+         </div>
+        
+        </div>
+       
+       </div>
+    <% }else{ %>
+
+
+
+
+<section>
+
+
+    <div class="table-responsive p-5">
+          <table class="table table-hover" id="myTable">
+          <div class="table table-hover container"  >
+              <thead>
                 <tr>
-                    <th scope="row">
-                        <%= result[i]._id %>
-                    </th>
-                    <td>₹ <%= result[i].bill %>
-                    </td>
-                    <td>
-                        <%= result[i].orderDate %>
-                    </td>
-                    <td>
-                        <%= result[i].paymentMode %>
-                    </td>
-                    <% if(result[i].orderStatus=="success" ){ %>
-                        <td><a href="/admin/confirm?id=<%= result[i]._id  %> "><button type="button"
-                                    class="btn btn-outline-success" onclick="return  confirm('Do you want to confirm <%= result[i]._id %>')">Confirm</button></a></td>
+                  <th scope="col">Order id</th>
+                  <th scope="col">Bill</th>
+                  <th scope="col">Order DATE</th>
+                  <th scope="col">Payment Method</th>
+                  <th scope="col">Confirmation</th>
+                  <th scope="col">view</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% for(let i=0;i<result.length;i++){ %> 
+                <tr>
+                  <td><%= result[i]._id %></td>
+                  <td><%=  result[i].bill  %></td>
+                  <td><%= result[i].orderDate %>  </td>
+                  <td><%= result[i].paymentMode %></td>
+                  <td>
+                      <a href="/admin/confirm?id=<%= result[i]._id  %> " onclick="return  confirm('Do you want to back <%= result[i]._id %>')"><button  type="button" class="btn btn-warning">Confirm</button></a>
+                  </td>
+                  <td><a href="/admin/vieworder?id=<%= result[i]._id  %> "><button type="button"
+                    class="btn btn-outline-success">View</button></a></td>
+                </tr>
+              <% } %> 
+              </tbody>
+            </table>
+      </div>
+    </div>
 
-                        <% } else if(result[i].status=="confirmed" && result[i].orderconfirmed ) { %>
+    
+  </section>
+<% } %> 
 
-                            <td><a href="/admin/adminhome/deliver?id=<%= result[i]._id  %> "><button type="button"
-                                        class="btn btn-outline-success" onclick="return  confirm('Do you want to delivery <%= result[i]._id %>')">delivered</button></a></td>
-                            <% } %>
-                                <td><a href="/admin/vieworder?id=<%= result[i]._id  %> "><button type="button"
-                                            class="btn btn-outline-success">View</button></a></td>
-                    </tr>
-                    <% } %> 
-        </tbody>
+
+
+
+
+
+  
+  
+  <script>
+  $(document).ready( function () {
+    $('#myTable').DataTable();
+  } );
+  </script>
+
+
+
 </body>
-
 </html>

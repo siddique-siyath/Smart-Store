@@ -1,10 +1,9 @@
 const { JSONCookie } = require('cookie-parser');
-const { Router } = require('express');
+
 var express = require('express');
 
 const { ObjectId } = require('mongodb');
 const { isObjectIdOrHexString } = require('mongoose');
-const { off } = require('../app');
 
 
 var router = express.Router();
@@ -186,7 +185,7 @@ router.post('/edit_product', store.any(), (req, res, next) => {
   let updateID = req.query.id
   console.log('haiiii..', req.body)
   console.log(updateID)
-console.log(req.files);
+  console.log(req.files);
   Product.updateOne({ _id: ObjectId(updateID) }, {
     $set: {
       productName: req.body.productName,
@@ -309,11 +308,11 @@ router.get('/delete_category', (req, res) => {
 //  order
 
 router.get('/orders', (req, res) => {
-  Order.find()
-    .then((order) => {
-      if (order) {
-        console.log(order);
-        res.render('Admin/order_details', { order })
+  Order.find({ confirm: false,cancel:false,return:false })
+    .then((result) => {
+      if (result) {
+        console.log(result);
+        res.render('Admin/order', { result })
       } else {
         console.log(err);
       }
@@ -327,7 +326,7 @@ router.get('/orders', (req, res) => {
 // confirm order
 
 router.get('/confirmed', (req, res) => {
-  Order.find({ confirm: true, delivery: false })
+  Order.find({ confirm: true, delivery: false,cancel:false,return:false })
     .then((result) => {
       if (result) {
         res.render('Admin/orderConfirm', { result })
@@ -355,7 +354,7 @@ router.get('/confirm', (req, res) => {
 // order delivery
 
 router.get('/delivered', (req, res) => {
-  Order.find({ delivery: true })
+  Order.find({ delivery: true,cancel:false,return:false })
     .then((result) => {
       if (result) {
         res.render('Admin/orderDelivery', { result })
@@ -380,13 +379,67 @@ router.get('/delivery', (req, res) => {
     })
 })
 
+
+router.get('/cancel', (req, res) => {
+  Order.find({ cancel:true })
+    .then((result) => {
+      if (result) {
+        res.render('Admin/cancel_order', { result })
+      } else {
+        console.log(err);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
+
+router.get('/return', (req, res) => {
+  Order.find({ return:true })
+    .then((result) => {
+      if (result) {
+        res.render('Admin/return_order', { result })
+      } else {
+        console.log(err);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
+
+
+// view Order
+
+
+router.get('/vieworder', (req, res) => {
+  let ProId = req.query.id
+  Order.find({_id:ObjectId(ProId)})
+    .then((docs) => {
+      if (docs) {
+        res.render('Admin/order_view', { docs })
+      } else {
+        console.log(err);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
+
+
+
+
 router.get('/back_confirm', (req, res) => {
   let proId = req.query.id
   console.log(proId);
   Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { confirm: false } })
     .then((result) => {
       if (result) {
-        res.redirect('/admin/delivered')
+        res.redirect('/admin/confirmed')
       }
     })
 })
@@ -398,27 +451,27 @@ router.get('/back_delivery', (req, res) => {
   Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { delivery: false } })
     .then((result) => {
       if (result) {
-        res.redirect('/admin/delivery')
+        res.redirect('/admin/delivered')
       }
     })
 })
 
 
-router.get('/vieworder',(req,res) => {
+router.get('/vieworder', (req, res) => {
   let order = req.query.id
   const user = session.userId
   console.log(order);
-  Order.findOne({_id:ObjectId(order)})
-  .then((result) => {
-    if(result){
-      res.render('Admin/user_order_view',{result})
-    }else{
+  Order.findOne({ _id: ObjectId(order) })
+    .then((result) => {
+      if (result) {
+        res.render('Admin/user_order_view', { result })
+      } else {
+        console.log(err);
+      }
+    })
+    .catch((err) => {
       console.log(err);
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+    })
 })
 
 
@@ -426,17 +479,17 @@ router.get('/vieworder',(req,res) => {
 
 router.get('/coupon', (req, res) => {
   Coupon.find()
-  .then((result) => {
-    if(result){
-    res.render('Admin/coupon',{result})
-    }else{
+    .then((result) => {
+      if (result) {
+        res.render('Admin/coupon', { result })
+      } else {
+        console.log(err);
+      }
+    })
+    .catch((err) => {
       console.log(err);
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-  
+    })
+
 })
 
 
@@ -449,17 +502,17 @@ router.post('/add-coupen', (req, res) => {
     expirydate: req.body.expirydate
   })
   coupon.save()
-  .then(() => {
-    res.redirect('/admin/coupon')
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+    .then(() => {
+      res.redirect('/admin/coupon')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 })
 
 
 
-router.post('/delete-coupon',(req,res) => {
+router.post('/delete-coupon', (req, res) => {
   let proId = req.query.id
   Coupon.findOneAndDelete({ _id: ObjectId(proId) })
     .then(() => {
@@ -473,79 +526,79 @@ router.post('/delete-coupon',(req,res) => {
 
 //  dash Board
 
-router.post('/test',(req, res) => {
+router.post('/test', (req, res) => {
 
   const months = [
-      january = [],
-      february = [],
-      march = [],
-      april = [],
-      may = [],
-      june = [],
-      july = [],
-      august = [],
-      september = [],
-      october = [],
-      november = [],
-      december = []
+    january = [],
+    february = [],
+    march = [],
+    april = [],
+    may = [],
+    june = [],
+    july = [],
+    august = [],
+    september = [],
+    october = [],
+    november = [],
+    december = []
   ]
-  
+
   const quarters = [
-      Q1 = [],
-      Q2 = [],
-      Q3 = [],
-      Q4 = []
+    Q1 = [],
+    Q2 = [],
+    Q3 = [],
+    Q4 = []
   ]
 
-  const monthNum = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+  const monthNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
-  Order.find({ delivery : true })
-      .then((orders) => {
-          monthNum.forEach((month, monthIndex) => {
-              orders.forEach((order, index) => {
-                  if(order.orderDate.getMonth()+1 == monthIndex+1 ) {
-                      months[monthIndex].push(order);
-                  }
-              })
-          })//author: Jafin
+  Order.find({ delivery: true })
+    .then((orders) => {
+      monthNum.forEach((month, monthIndex) => {
+        orders.forEach((order, index) => {
+          if (order.orderDate.getMonth() + 1 == monthIndex + 1) {
+            months[monthIndex].push(order);
+          }
+        })
+      })//author: Jafin
 
-          orders.forEach((order) => {
-              if(order.orderDate.getMonth()+1 <= 3){
-                  quarters[0].push(order)
-              }else if(order.orderDate.getMonth()+1 > 3 && order.orderDate.getMonth()+1 <= 6){
-                  quarters[1].push(order)
-              }else if(order.orderDate.getMonth()+1 > 6 && order.orderDate.getMonth()+1 <= 9){
-                  quarters[2].push(order)
-              }else if(order.orderDate.getMonth()+1 >9 && order.orderDate.getMonth()+1 <= 12){
-                  quarters[3].push(order)
-              }
-          })
-          
-          const monthlySalesTurnover = [];
-          const quarterlySalesTurnover = [];
-          months.forEach((month) => {
-              let eachMonthTurnover = month.reduce((acc, curr) => {
-                  acc += +curr.bill;
-                  return acc;
-              }, 0)
-              monthlySalesTurnover.push(eachMonthTurnover);
-          })
-
-          quarters.forEach((quarter) => {
-              let eachQuarterTurnover = quarter.reduce((acc, curr) => {
-                  acc += curr.bill;
-                  return acc;
-              }, 0)
-              quarterlySalesTurnover.push(eachQuarterTurnover)
-          })
-
-          let annualSales = orders.reduce((acc, curr) => {
-              acc += curr.bill
-              return acc;
-          }, 0)
-
-          res.json({ salesOfTheYear : monthlySalesTurnover, quarterlySales : quarterlySalesTurnover, annualSales : annualSales })
+      orders.forEach((order) => {
+        if (order.orderDate.getMonth() + 1 <= 3) {
+          quarters[0].push(order)
+        } else if (order.orderDate.getMonth() + 1 > 3 && order.orderDate.getMonth() + 1 <= 6) {
+          quarters[1].push(order)
+        } else if (order.orderDate.getMonth() + 1 > 6 && order.orderDate.getMonth() + 1 <= 9) {
+          quarters[2].push(order)
+        } else if (order.orderDate.getMonth() + 1 > 9 && order.orderDate.getMonth() + 1 <= 12) {
+          quarters[3].push(order)
+        }
       })
+
+      const monthlySalesTurnover = [];
+      const quarterlySalesTurnover = [];
+      months.forEach((month) => {
+        let eachMonthTurnover = month.reduce((acc, curr) => {
+          acc += +curr.bill;
+          return acc;
+        }, 0)
+        monthlySalesTurnover.push(eachMonthTurnover);
+      })
+
+      quarters.forEach((quarter) => {
+        let eachQuarterTurnover = quarter.reduce((acc, curr) => {
+          acc += curr.bill;
+          return acc;
+        }, 0)
+        quarterlySalesTurnover.push(eachQuarterTurnover)
+      })
+
+      let annualSales = orders.reduce((acc, curr) => {
+        acc += curr.bill
+        return acc;
+      }, 0)
+
+      res.json({ salesOfTheYear: monthlySalesTurnover, quarterlySales: quarterlySalesTurnover, annualSales: annualSales })
+    })
 })
 
 
@@ -555,55 +608,55 @@ router.post('/test',(req, res) => {
 
 
 router.get("/exportExcel", (req, res) => {
-  Order.find({delivery:true})
- .then((SalesReport)=>{
-   
+  Order.find({ delivery: true })
+    .then((SalesReport) => {
 
-console.log(SalesReport)
- try {
-   const workbook = new ExcelJS.Workbook();
 
-   const worksheet = workbook.addWorksheet("Sales Report");
+      console.log(SalesReport)
+      try {
+        const workbook = new ExcelJS.Workbook();
 
-   worksheet.columns = [
-     { header: "S no.", key: "s_no" },
-     { header: "OrderID", key: "_id" },
-     { header: "Date", key: "orderDate" },
-     { header: "Products", key: "productName" },
-     { header: "Method", key: "paymentMode" },
-     { header: "status", key: "orderStatus" },
-     { header: "Amount", key: "bill" },
-   ];
-   let counter = 1;
-   SalesReport.forEach((report) => {
-     report.s_no = counter;
-     report.productName = "";
+        const worksheet = workbook.addWorksheet("Sales Report");
 
-     // report.name = report.userid;
-     report.items.forEach((eachproduct) => {
-       report.productName += eachproduct.productName + ", ";
-      //  console.log(report.Product);
-     });
-     worksheet.addRow(report);
-     counter++;
-   });
+        worksheet.columns = [
+          { header: "S no.", key: "s_no" },
+          { header: "OrderID", key: "_id" },
+          { header: "Date", key: "orderDate" },
+          { header: "Products", key: "productName" },
+          { header: "Method", key: "paymentMode" },
+          { header: "status", key: "orderStatus" },
+          { header: "Amount", key: "bill" },
+        ];
+        let counter = 1;
+        SalesReport.forEach((report) => {
+          report.s_no = counter;
+          report.productName = "";
 
-   worksheet.getRow(1).eachCell((cell) => {
-     cell.font = { bold: true };
-   });
-   
+          // report.name = report.userid;
+          report.items.forEach((eachproduct) => {
+            report.productName += eachproduct.productName + ", ";
+            //  console.log(report.Product);
+          });
+          worksheet.addRow(report);
+          counter++;
+        });
 
-   res.header(
-     "Content-Type",
-     "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
-   );
-   res.header("Content-Disposition", "attachment; filename=report.xlsx");
+        worksheet.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
+        });
 
-   workbook.xlsx.write(res);
- } catch (err) {
-   console.log(err.message);
- }
-});
+
+        res.header(
+          "Content-Type",
+          "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
+        );
+        res.header("Content-Disposition", "attachment; filename=report.xlsx");
+
+        workbook.xlsx.write(res);
+      } catch (err) {
+        console.log(err.message);
+      }
+    });
 });
 
 

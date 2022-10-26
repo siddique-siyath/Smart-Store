@@ -261,6 +261,16 @@ const orderSchema = new Schema({
        delivery:{
         type:String,
         required:true
+       },
+       cancel:{
+        type:String,
+        default:false,
+        require:true
+       },
+       return:{
+        type:String,
+        default:false,
+        require:true
        }
     },{timestamps:true})
 

@@ -7,38 +7,31 @@
 
   <section class="px-5 pt-5 ">
 
-    <div class="table-responsive mt-5">
-      <div style="position: absolute;right: 4rem;width: 400px;margin-top: -4rem;">
-        <input style="align-items: flex-end" type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search..."/>
-      </div>
-      <table id="myTable" class="table table-borderless " id="usertable">
-
-        <thead class="">
+    
+  <div class="table-responsive p-5">
+    <table class="table table-hover" id="myTable">
+    <div class="table table-hover container"  >
+        <thead>
           <tr class="border border-1 border-seconday border-start-0 border-end-0">
             <th scope="col">No</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Address</th>
-            <th scope="col">unblock</th>
-            <th scope="col">block</th>
+            <th scope="col">Action</th>
 
           </tr>
         </thead>
         <tbody>
           <% for(let i=0;i<docs.length;i++){ %>
             <tr>
-              <th scope="row">
-                <%= num++ %>
-              </th>
-              <td>
-                <%= docs[i].name %>
-              </td>
-              <td>
-                <%= docs[i].email %>
-              </td>
-              <td>
-                <%= docs[i].password %>
-              </td>
+            
+              
+
+              <th scope="row"><%= num++ %> </th>
+              <td><%= docs[i].name  %></td>
+                <td><%=  docs[i].email  %></td>
+                <td><%=  docs[i].password  %>  </td>
+                
 
               <td>
 
@@ -68,6 +61,7 @@
 
 
         </tbody>
+        </div>
       </table>
     </div>
 
@@ -75,39 +69,14 @@
 
   </section>
 
- 
- 
 
+  
+  
   <script>
-
-    $(document).ready(function () {
-      $('#usertable').DataTable();
-    });
-
-
-  </script>
-
-  <script>
-     
-     function myFunction() {
-      let input = document.getElementById("myInput");
-      let filter = input.value.toUpperCase();
-      let table = document.getElementById("myTable");
-      let tr = table.getElementsByTagName("tr");
-      for (let i = 0; i < tr.length; i++) {
-          let td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-          let txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }       
-      }
-    }
-
-  </script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    } );
+    </script>
 
 
 

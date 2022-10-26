@@ -1,0 +1,40 @@
+<%- include('../layout/header') %>
+    <%- include('../partials/admin-header') %>
+
+
+ <div class="table-responsive p-5" id="pt"> 
+    <table class="table table-hover" id="usertable"> 
+      <div class="table table-hover container"  > 
+        <thead> 
+          <tr> 
+                <th scope="col">Product Name</th> 
+                <th scope="col">Price</th> 
+                <!-- <th scope="col">Offer Price</th>  -->
+                <th scope="col">Date</th> 
+                <th scope="col">Image</th> 
+                <th scope="col">Quantity</th> 
+                <!-- <th scope="col">Status</th>  -->
+          </tr> 
+        </thead> 
+        <tbody> 
+        <% for(i=0;i<docs[0].items.length;i++) { %>  
+          <tr> 
+            <td><%= docs[0].items[i].productName  %> </td> 
+            <td><%= docs[0].items[i].price %> </td> 
+            <!-- <td><%= //orderItems[i].offerPrice %></td>  -->
+            <td><%= docs[0].orderDate %></td> 
+            <td> 
+                <img id="main-image" src="/images/<%=docs[0].items[i].image1 %>" style="width: 5rem;height: 5rem;" alt=""> 
+            </td> 
+            <td><%= docs[0].items[i].quantity  %></td> 
+            <!-- <td style="font-weight: 600;"><%=// docs.orderStatus %></td>  -->
+          </tr> 
+        <% } %>  
+        </tbody> 
+      </table> 
+    </div> 
+</div> 
+
+
+
+<%- include('../layout/footer') %> 

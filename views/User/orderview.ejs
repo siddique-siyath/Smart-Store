@@ -74,17 +74,20 @@
 
                                     </div>
                                     <div class="card-footer p-4">
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between align-items-center">
 
-                                            <div class="border-start h-100"></div>
+                                          
                                             <% if( docs.delivery == "true" ){ %>
                                                
-                                                    <a href="/returnorder?id=<%= docs._id  %> "> <button class="round-black-btn small-btn" style="background-color: red;border-radius: 20px;margin-left: 32rem;" onclick=" return confirm('Are you sure want to return the order')">Return</button></a>
+                                                    <a href="/returnorder?id=<%= docs._id  %> "> <button class="round-black-btn small-btn" style="background-color: red;border-radius: 20px;" onclick=" return confirm('Are you sure want to return the order')">Return</button></a>
                                                 
                                                 <% }else{ %>
-                                                    <h5 class="fw-normal mb-0">
-                                                        <a href="/cancelorder?id=<%= docs._id  %> "> <img src="https://img.icons8.com/fluency/48/000000/cancel.png" style="margin-left: 32rem;"/></a>
-                                                    </h5>
+                                                  <% if(docs.cancel == 'true'){ %> 
+                                                    <div style="color: black;background-color: red;height: 5rem;width: 36rem;border-radius: 20px;"><p class="font-weight-light fs-1 text-center" style="height: 5rem;margin-top: 0.5rem;">CANCELLED</p></div>
+                                                           <% }else{ %> 
+                                                            <a href="/cancelorder?id=<%= docs._id  %> "> <img src="https://img.icons8.com/fluency/48/000000/cancel.png"/></a>
+                                              
+                                                    <% } %> 
                                                     <% } %>
                                                         <div class="border-start h-100"></div>
 

@@ -264,3 +264,29 @@ body {
     margin: 20px 0;
     display: inline-block;}
 	.contant_box_404{ margin-top:-50px;}
+
+
+
+
+
+
+
+
+
+	/* order */
+
+
+
+	
+.border-radius--fill {
+	outline: none;
+	box-shadow: inset 0 0 0 0 var(--focus-color);
+	transition: all 0.33s ease-in;
+  }
+  
+  .border-radius--fill:focus {
+	box-shadow: inset 0 0 0 3rem var(--focus-color);
+	color: #fff;
+  }
+  
+  

@@ -1,14 +1,14 @@
 
 var express = require('express');
 const { ObjectId, GridFSBucket } = require('mongodb');
-const { response } = require('../app');
+
 
 
 var router = express.Router();
 
 var session = express('session')
 
-const { User, Admin, Login, Product, Cart, Wishlist, Order, Coupon } = require('../config/connection');
+const { User, Admin, Login, Product, Cart, Wishlist, Order, Coupon, Category } = require('../config/connection');
 const otp = require('../middleware/otp');
 
 
@@ -177,7 +177,7 @@ router.post('/sentotp', (req, res) => {
         otp.sendOtp(req.body.mobile)
         res.redirect('/otp')
       } else {
-        res.send('not valid')
+        res.redirect()
       }
     })
 })
@@ -193,75 +193,96 @@ router.get('/home', (req, res) => {
 
 
 
-// router.get('/', (req, res) => {
-//   let user = session.userId
-//   console.log(user);
-//   Product.find({})
-//     .then((result) => {
-//       console.log(result);
-//       Wishlist.find({ userid: user })
-//         .then((wish) => {
-//           res.render('User/home', { result, wish })
-//         })
-//     })
-// })
-
-
-
 router.get('/', (req, res) => {
-    let user = session.userId
-    console.log(user);
-    Product.find({})
-      .then((result) => {
-        console.log(result);
-        Wishlist.find({ userid: user })
-          .then((wish) => {
-            for(let i=0;i<result.length;i++){
-             
-                for(let j=0;j<wish.length;j++){
-                  if(result[i]._id == wish[j].Productid){
-                  Product.findOneAndUpdate({_id:ObjectId(result[j]._id),wishlist:false},{$set:{Wishlist:true}})
-                  .then(() => {
-
-                  })
-                  }else{
-                    Product.findOneAndUpdate({_id:ObjectId(result[j]._id),wishlist:true},{$set:{Wishlist:false}})
-                    .then(() => {
-
-                    })
-                  }
-                }
+  let user = session.userId
+  let cat = req.query.category
+  console.log(cat);
+  console.log(user);
+ 
+      Wishlist.find({ userid: user })
+        .then((wish) => {
+          if(cat){
+            Product.find({category:cat})
+            .then((result) => {
+            if(result){
+            console.log('djkhlsfhjkhsd');
           
+            res.render('User/home', { result, wish})
             }
-          
-           
-              for(let i=0;i<result.length;i++){
-                console.log(i);
-                for(let j=0;j<wish.length;j++){
-                  console.log(j);
-                  if(result[i]._id == wish[j].Productid){
-                    Product.findOneAndUpdate({_id:ObjectId(result[i]._id),wishlist:false},{$set:{Wishlist:true}})
-                    .then((res) => {
-                      if(res){
-  
-                      }else{
-                      console.log('sakdkjash');
-                      
-                      }
-                    })
-                  }else{
-                    
-                  }
-                }
-              }
-            
-           
-            
-            res.render('User/home', { result, wish })
           })
-      })
-  })
-  
+        }else{
+          Product.find()
+          .then((result) => {
+          res.render('User/home', { result, wish })
+          })
+        }
+         
+        })
+    
+})
+
+
+
+router.get('/homecat',(req,res) => {
+  console.log('hello');
+  res.send('hello')
+})
+
+
+// router.get('/', (req, res) => {
+//     let user = session.userId
+//     console.log(user);
+//     Product.find({})
+//       .then((result) => {
+//         console.log(result);
+//         Wishlist.find({ userid: user })
+//           .then((wish) => {
+//             for(let i=0;i<result.length;i++){
+
+//                 for(let j=0;j<wish.length;j++){
+//                   if(result[i]._id == wish[j].Productid){
+//                   Product.findOneAndUpdate({_id:ObjectId(result[j]._id),wishlist:false},{$set:{Wishlist:true}})
+//                   .then(() => {
+
+//                   })
+//                   }else{
+//                     Product.findOneAndUpdate({_id:ObjectId(result[j]._id),wishlist:true},{$set:{Wishlist:false}})
+//                     .then(() => {
+
+//                     })
+//                   }
+//                 }
+
+//             }
+
+
+//               for(let i=0;i<result.length;i++){
+//                 console.log(i);
+//                 for(let j=0;j<wish.length;j++){
+//                   console.log(j);
+//                   if(result[i]._id == wish[j].Productid){
+//                     Product.findOneAndUpdate({_id:ObjectId(result[i]._id),wishlist:false},{$set:{Wishlist:true}})
+//                     .then((res) => {
+//                       if(res){
+
+//                       }else{
+//                       console.log('sakdkjash');
+
+//                       }
+//                     })
+//                   }else{
+
+//                   }
+//                 }
+//               }
+
+
+
+//             res.render('User/home', { result, wish })
+//           })
+//       })
+//   })
+
 
 
 
@@ -595,12 +616,12 @@ router.get('/checkout', (req, res) => {
               .then((docs) => {
                 console.log(docs);
                 if (docs) {
-                  res.render('User/checkout', { result, docs, totalAmount, finalAmount ,validation})
+                  res.render('User/checkout', { result, docs, totalAmount, finalAmount, validation })
                 }
                 validation.coupon = false,
-                validation.couponUsed = false,
-                validation.couponMin = false,
-                validation.couponExpire = false
+                  validation.couponUsed = false,
+                  validation.couponMin = false,
+                  validation.couponExpire = false
               })
 
 
@@ -1050,7 +1071,7 @@ router.get('/myOrdersView', (req, res) => {
 router.get('/cancelorder', (req, res) => {
   const proId = req.query.id
   const user = session.userId
-  Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { orderStatus: 'cancel' } })
+  Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { cancel:true } })
     .then(() => {
       res.redirect('/myOrder')
     })
@@ -1062,7 +1083,7 @@ router.get('/cancelorder', (req, res) => {
 router.get('/returnorder', (req, res) => {
   const proId = req.query.id
   const user = session.userId
-  Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { orderStatus: 'returned' } })
+  Order.findOneAndUpdate({ _id: ObjectId(proId) }, { $set: { return:true } })
     .then(() => {
       res.redirect('/myOrder')
     })
@@ -1070,6 +1091,7 @@ router.get('/returnorder', (req, res) => {
       console.log(err);
     })
 })
+
 
 
 //  coupon
@@ -1087,75 +1109,75 @@ router.post('/apply_coupon', (req, res) => {
 
   Coupon.findOne({ couponcode: couponId })
     .then((cpn) => {
-if(cpn){
-
-
-      console.log(cpn);
-      let value = cpn.couponvalue
-      console.log(value);
-      req.session.coupon = totalPrice - value
-      console.log(req.session.coupon);
-      console.log('hgjadjhfgsjdgh');
-      console.log(cpn);
       if (cpn) {
-        Coupon.findOne({ couponcode: couponId, User: { $elemMatch: { userid: user } } })
-          .then((docs) => {
-            if (docs) {
-
-              validation.couponUsed = true;
-              
-              console.log('This coupon is already used');
-              res.json({Validation:true})
-            } else {
-
-              Coupon.findOne({ couponcode: couponId })
-                .then((result) => {
-                  console.log(result);
-                  let CD = Date.now()
-                  if (CD > result.startdate && CD < result.expirydate) {
 
 
+        console.log(cpn);
+        let value = cpn.couponvalue
+        console.log(value);
+        req.session.coupon = totalPrice - value
+        console.log(req.session.coupon);
+        console.log('hgjadjhfgsjdgh');
+        console.log(cpn);
+        if (cpn) {
+          Coupon.findOne({ couponcode: couponId, User: { $elemMatch: { userid: user } } })
+            .then((docs) => {
+              if (docs) {
 
-                    if (result.minbill < totalPrice) {
-                      const count = result.length
-                      let couponDiscountedBill = totalPrice - result.couponvalue;
-                      console.log(couponDiscountedBill);
+                validation.couponUsed = true;
 
-                      req.session.coupon = +result.couponvalue
-                      console.log(req.session.coupon);
+                console.log('This coupon is already used');
+                res.json({ Validation: true })
+              } else {
 
-                      Coupon.findOneAndUpdate({ couponcode: couponId }, { $push: { User: { userid: user } } })
-                        .then(() => {
-                          res.json({ change: true, couponDiscountedBill })
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        })
+                Coupon.findOne({ couponcode: couponId })
+                  .then((result) => {
+                    console.log(result);
+                    let CD = Date.now()
+                    if (CD > result.startdate && CD < result.expirydate) {
+
+
+
+                      if (result.minbill < totalPrice) {
+                        const count = result.length
+                        let couponDiscountedBill = totalPrice - result.couponvalue;
+                        console.log(couponDiscountedBill);
+
+                        req.session.coupon = +result.couponvalue
+                        console.log(req.session.coupon);
+
+                        Coupon.findOneAndUpdate({ couponcode: couponId }, { $push: { User: { userid: user } } })
+                          .then(() => {
+                            res.json({ change: true, couponDiscountedBill })
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          })
+
+
+                      } else {
+                        validation.couponMin = true
+                        console.log('minimum value of coupon is not');
+                        res.json({ Validation: true })
+                      }
 
 
                     } else {
-                      validation.couponMin = true
-                      console.log('minimum value of coupon is not');
-                      res.json({Validation:true})
+                      validation.couponExpire = true
+                      console.log('coupon is expired');
+                      res.json({ Validation: true })
                     }
+                  })
+              }
+            })
+        }
+      } else {
 
-
-                  } else {
-                    validation.couponExpire = true
-                    console.log('coupon is expired');
-                    res.json({Validation:true})
-                  }
-                })
-            }
-          })
+        validation.coupon = true;
+        console.log('coupon code is incorrect');
+        console.log(validation);
+        res.json({ Validation: true })
       }
-    }else{
-      
-      validation.coupon = true;
-  console.log('coupon code is incorrect');
-  console.log(validation);
-  res.json({Validation:true})
-    }
     })
     .catch((err) => {
       console.log(err);
