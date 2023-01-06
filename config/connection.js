@@ -86,7 +86,7 @@ const loginSchema = new Schema({
 
 const adminSchema = new mongoose.Schema({
     email: String,
-    password: Number
+    password: String
 })
 
 

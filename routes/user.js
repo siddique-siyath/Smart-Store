@@ -740,7 +740,7 @@ router.post('/checkout', (req, res) => {
                 delivery: false,
                 paymentMode: paymentMethod,
                 orderDate: new Date(),
-                orderStatus: 'successs'
+                orderStatus: 'success'
               })
               order.save()
                 .then((order) => {
@@ -895,7 +895,7 @@ router.get('/payment/paypal', (req, res) => {
           }
         }
       })
-      .catch((err) => {
+      .catch((err) => { -
         console.log(err);
         res.redirect('/err');
       });

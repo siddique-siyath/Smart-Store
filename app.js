@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({secret:"key",resave:false,saveUninitialized:true,cookie:{maxAge:600000}}));
 
-mongoose.connect('mongodb://localhost:27017/StarStore').then(() => {
+mongoose.connect('mongodb://127.0.0.1:27017/meracart').then(() => {
   console.log('Database connected')
   
 }).catch(() => {
