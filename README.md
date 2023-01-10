@@ -19,6 +19,10 @@ In order to access the admin panel on "/admin" you need to provide the admin ema
 
 
 
+![This is an image](https://github.com/siddique-siyath/Smart-Store/public/images/1666687451580.webp)
+
+
+
 ## Run
 
 
