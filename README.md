@@ -19,7 +19,7 @@ In order to access the admin panel on "/admin" you need to provide the admin ema
 
 
 
-![This is an image](/public/images/14buy_now.jpg)
+![This is an image](/public/Image/14buy_now.jpg)
 
 
 
